@@ -1,0 +1,25 @@
+<?php
+$creds = json_decode(file_get_contents('assets/data/creds.json'), true);
+$ssoToken = $creds['{"jToken":"6e3a9aaf947b71b85e2949528065c2eb.1385d875a1fd11c0e6abcb2dcde9ecaf9ed2f931ab2e5a10bde63dd729b6ad05d488ecc0909790968a8eacd84f49147915299d422b39ca82cb2b70cde53893859e5fa9a0587b85ddde2db8ead00e992805787382e0f6061a94e8e1664ab67e38c35e6907fbe3f23b37fc8c29002c401697cbb5c2a659d7c21b911cc1aab4693296707c302b6ceb19b3a9b2e73b8c93099953e52f3d3e445601627329d046e50c131e7543b07cbc92de2388433345dd4dacfc1f71dad3b290ea595a2bc6088a66814af960ff5a40bc06159c1c80b3bce55f6e490306d95d5f045af0feb29f6234182f15bc5a43ead2b12b00dae3a8268a7dc2208a72941d58ae608ba59da1f464e93cf08258323591f9089ba62b3cf6eb54b368860b20be620887004c94ed33a7aed478819a082c30081f7d6d95df8e028d0cd2dbd10da3f9208289b91f3d250b76d771626a89d6c0fcdcd523b85e58741b1fda6098a911fd872bb07dfd5a35340b7a7aa62393d67bc523fd52d809ccb3","sessionAttributes":{"otpValidatedDate":"2023-04-03T08:52:36+0000","passwordExpiry":"","profile":{"billingId":"299268213381","entitlements":["ALL_REGULAR_USERS","ALL_NOT_KYC_VERIFIED_USERS"],"profileId":"d89ac57c-2240-4b45-9107-95c5cd0e3b24","profileName":"default"},"user":{"commonName":"Ravkeda Husenbhai Alarakha","mail":"jakirhusen287@gmail.com","mobile":"+919106102172","preferredLocale":"en-US","ssoLevel":"20","subscriberId":"1052428552","uid":"ravkedahusenbhaialarakha-2789","unique":"4e8e0495-5fab-45e3-aee8-69f2eb092940"}},"ssoLevel":"20","ssoToken":"eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJ1bmlxdWUiOiI0ZThlMDQ5NS01ZmFiLTQ1ZTMtYWVlOC02OWYyZWIwOTI5NDAiLCJ1c2VyVHlwZSI6IlJJTHBlcnNvbiIsImF1dGhMZXZlbCI6IjIwIiwiZGV2aWNlSWQiOiJhYmQ4ZTkzYWRiN2Y1ZDU2NjE1ZTA5YTViOTE4NTg4M2VjYzdmMTA0ZmMxNDg3ZGE4MmY2YzEyMzA1ZDY5YmI2Yjk3MjdlMmFlYjIyZmQ0MGNkMDc4ZThhMzUyNjIxYWY0NjJmMzk2MDI1MDUxZTEzZTBkMDE2MmIzZjRhZDU4MyIsImp0aSI6IjI4YWNmZDQ5LTMyZWEtNGVlYi05ZjFhLTY5YjA2YWMzYjNiYiIsImlhdCI6MTY4MDUxMTk1Nn0.QPPd8h3639bdBYaIgY7dvRn9iWRof8PO9JkizUb-_TOU0MAFs_RdzBgFZu1LRWDJqimPZVrkSLTHr_6l-1fTAw","lbCookie":"1"}'];
+
+function magic($str)
+{
+    $str = base64_encode(md5($str, true));
+    return str_replace("\n", "", str_replace("\r", "", str_replace("/", "_", str_replace("+", "-", str_replace("=", "", $str)))));
+}
+
+function generateToken()
+{
+    global $ssoToken;
+    $st = magic($ssoToken);
+    $pxe = time() + 6000000;
+    $jct = trim(magic("cutibeau2ic" . $st . $pxe));
+    return "?jct=" . $jct . "&pxe=" . $pxe . "&st=" . $st;
+}
+
+$token = generateToken();
+
+
+
+
+
